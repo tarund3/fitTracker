@@ -1,4 +1,3 @@
-# fitTracker
 # **FitBuddy - Backend**
 
 🚀 **FitBuddy** is a full-stack web application that creates **personalized workout plans** based on user goals, health metrics, and preferences. This repository contains the **backend**, built using the **MERN stack (MongoDB, Express.js, React, Node.js)**.
