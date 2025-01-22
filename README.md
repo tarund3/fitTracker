@@ -1,121 +1,104 @@
+# FitTracker
 
-# **FitBuddy - Backend**
+## Overview
+FitTracker is a full-stack web application that creates personalized workout plans based on user goals, health metrics, and preferences. The application leverages the **MERN stack** (MongoDB, Express.js, React, Node.js) to provide a dynamic, responsive, and intuitive user experience across multiple devices.
 
-🚀 **FitBuddy** is a full-stack web application that creates **personalized workout plans** based on user goals, health metrics, and preferences. This repository contains the **backend**, built using the **MERN stack (MongoDB, Express.js, React, Node.js)**.
+## Features
+### ✅ **Authentication System**
+- Users can **register** and **log in** securely.
+- Uses **JWT authentication** for secure sessions.
+- Passwords are **hashed** before storing in the database.
 
-## **📌 Features Implemented So Far**
-### ✅ **1. User Authentication**
-- **User Registration & Login** using **JWT-based authentication**.
-- **Password hashing** with `bcryptjs` for security.
-- Protected routes with **JWT middleware**.
+### ✅ **User Profiles**
+- Users can **set and update their fitness goals**.
+- Stores personal details like **age, weight, height**.
+- Users can track **progress over time**.
 
-### ✅ **2. Profile Management**
-- Users can **create, update, and delete** their fitness profiles.
-- Each profile stores **age, weight, height, fitness goal, and target areas**.
+### ✅ **Workout Plan Generation**
+- Generates **personalized workout plans**.
+- Users can **customize exercises, intensity, and schedule**.
 
-### ✅ **3. Workout Plan API**
-- Users can **create, fetch, update, and delete** their workout plans.
-- Each plan includes **goal-based exercises** (e.g., strength, endurance, weight loss).
-- Users can **customize difficulty, sets, and reps**.
+### ✅ **Progress Tracking**
+- Logs **completed workouts**.
+- Displays progress using **charts and analytics**.
 
----
+## Tech Stack
+### **Frontend**
+- React (React Router for navigation)
+- Context API for state management
+- Axios for API calls
 
-## **🛠️ Tech Stack**
-| Technology  | Purpose |
-|-------------|---------|
-| **Node.js** | Backend runtime environment |
-| **Express.js** | Web framework for building APIs |
-| **MongoDB (Mongoose)** | NoSQL database for storing user data |
-| **bcryptjs** | Secure password hashing |
-| **jsonwebtoken (JWT)** | User authentication & security |
-| **dotenv** | Environment variable management |
+### **Backend**
+- Node.js & Express.js (REST API)
+- MongoDB (Database)
+- Mongoose (ODM for MongoDB)
+- bcrypt.js for password hashing
+- JSON Web Tokens (JWT) for authentication
 
----
-
-## **📂 Folder Structure**
-```
-fitBuddy/
-  ├── server/                  # Backend code
-  │   ├── config/               # Database configuration
-  │   ├── middleware/           # JWT authentication middleware
-  │   ├── models/               # Mongoose models (User, Profile, Workout)
-  │   ├── routes/               # API route handlers (Auth, Profile, Workouts)
-  │   ├── server.js             # Express server setup
-  │   ├── .env                  # Environment variables (not committed)
-  ├── frontend/                 # (To be implemented)
-  ├── README.md                 # Project documentation
-```
-
----
-
-## **🛠️ Setup Instructions**
-### **1️⃣ Clone the Repository**
+## Setup Instructions
+### **1️⃣ Clone the repository**
 ```bash
-git clone https://github.com/tarund3/fitTracker.git
-cd fitTracker/server
+git clone https://github.com/YourGitHubUsername/fitTracker.git
+cd fitTracker
 ```
 
-### **2️⃣ Install Dependencies**
+### **2️⃣ Install dependencies**
+#### Backend
 ```bash
+cd backend
+npm install
+```
+#### Frontend
+```bash
+cd frontend
 npm install
 ```
 
-### **3️⃣ Set Up Environment Variables**
-Create a `.env` file in the `server/` folder and add:
-```
+### **3️⃣ Configure environment variables**
+Create a **.env** file in the `backend/` directory and add:
+```env
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=5000
+JWT_SECRET=your_secret_key
+PORT=5002
 ```
 
-### **4️⃣ Run the Server**
+### **4️⃣ Start the application**
+#### Run the backend:
 ```bash
+cd backend
 npm run dev
 ```
-✅ The server should start on **http://localhost:5000/**.
+#### Run the frontend:
+```bash
+cd frontend
+npm start
+```
 
----
+## API Routes
+### **Authentication**
+- `POST /api/auth/register` → Register a new user
+- `POST /api/auth/login` → Authenticate user and return a JWT token
 
-## **🛠️ API Endpoints**
-### 🔹 **Authentication**
-| Method | Endpoint            | Description |
-|--------|--------------------|-------------|
-| POST   | `/api/auth/register` | Register a new user |
-| POST   | `/api/auth/login` | Login a user & get JWT token |
-| GET    | `/api/auth/me` | Get logged-in user data (Protected) |
+### **User Profile**
+- `GET /api/profile` → Fetch user profile
+- `PUT /api/profile/update` → Update user profile
 
-### 🔹 **Profile Management**
-| Method | Endpoint | Description |
-|--------|---------|-------------|
-| GET    | `/api/profile` | Get the user's profile (Protected) |
-| POST   | `/api/profile` | Create/update profile (Protected) |
-| DELETE | `/api/profile` | Delete profile (Protected) |
+### **Workout Management**
+- `GET /api/workouts` → Fetch workouts
+- `POST /api/workouts/add` → Add a workout
+- `PUT /api/workouts/update/:id` → Update a workout
+- `DELETE /api/workouts/delete/:id` → Delete a workout
 
-### 🔹 **Workout Plans**
-| Method | Endpoint | Description |
-|--------|---------|-------------|
-| POST   | `/api/workouts` | Create a workout plan (Protected) |
-| GET    | `/api/workouts` | Get all workout plans (Protected) |
-| PUT    | `/api/workouts/:id` | Update a workout plan (Protected) |
-| DELETE | `/api/workouts/:id` | Delete a workout plan (Protected) |
+## Deployment
+- **Frontend:** Vercel / Netlify
+- **Backend:** Heroku / Render / AWS
 
----
+## Contributors
+- **Tarun Damodaran** - Creator & Developer
 
-## **📌 Next Steps**
-- **🔜 Progress Tracking** (Graphs & Stats 📈)
-- **🔜 Frontend Development** (React + Redux)
-- **🔜 Notifications & Reminders** (Push Notifications)
+## Next Steps
+- 📌 **Integrate notifications & reminders**
+- 📌 **Implement AI-based workout recommendations**
+- 📌 **Add social sharing features**
 
----
-
-## **💡 Contributors**
-👤 **Tarun D.** - _Developer_  
-💡 **Want to contribute?** Fork the repository, make your changes, and submit a pull request! 🚀
-
----
-
-## **📜 License**
-This project is **open-source** and available under the **MIT License**.
-
----
-
+🚀 **FitTracker is in active development. Contributions are welcome!**
