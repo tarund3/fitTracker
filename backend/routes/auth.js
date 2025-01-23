@@ -41,14 +41,14 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ msg: 'User not found' });
 
-    // Compare entered password with hashed password
+    // Compare the entered password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-    // Generate JWT Token
+    // Generate JWT token
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
