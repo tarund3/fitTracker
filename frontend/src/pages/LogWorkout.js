@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import API from '../api/api';
+import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+
 
 const LogWorkout = ({ onWorkoutLogged }) => {
     const { user } = useContext(AuthContext); // accesses user from AuthContext.js
@@ -64,48 +66,44 @@ const LogWorkout = ({ onWorkoutLogged }) => {
     };
 
     return (
-        <div>
-          <h3>Log a Completed Workout</h3>
+        <Container>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Log a Completed Workout</Card.Title>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Select Workout</Form.Label>
+                  <Form.Select onChange={(e) => handleWorkoutSelect(e.target.value)} value={selectedWorkout?._id || ''}>
+                    <option value="" disabled>Select a workout</option>
+                    {workouts.map((workout) => (
+                      <option key={workout._id} value={workout._id}>{workout.goal}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
     
-          {/* Dropdown to select a workout */}
-          <select onChange={(e) => handleWorkoutSelect(e.target.value)} value={selectedWorkout?._id || ''}>
-            <option value="" disabled>Select a workout</option>
-            {workouts.map((workout) => (
-              <option key={workout._id} value={workout._id}>{workout.goal}</option>
-            ))}
-          </select>
+                {selectedWorkout && logData.map((exercise, index) => (
+                  <Row key={index} className="mb-3">
+                    <Col>
+                      <Form.Label>{exercise.name}</Form.Label>
+                      <Form.Control type="number" placeholder="Sets" value={exercise.setsCompleted}
+                        onChange={(e) => handleInputChange(index, 'setsCompleted', Number(e.target.value))} />
+                    </Col>
+                    <Col>
+                      <Form.Control type="number" placeholder="Reps" value={exercise.repsCompleted}
+                        onChange={(e) => handleInputChange(index, 'repsCompleted', Number(e.target.value))} />
+                    </Col>
+                    <Col>
+                      <Form.Control type="number" placeholder="Duration (seconds)" value={exercise.duration}
+                        onChange={(e) => handleInputChange(index, 'duration', Number(e.target.value))} />
+                    </Col>
+                  </Row>
+                ))}
     
-          {/* If a workout is selected, display input fields for each exercise */}
-          {selectedWorkout && (
-            <form onSubmit={handleSubmit}>
-              <h4>{selectedWorkout.goal}</h4>
-              {logData.map((exercise, index) => (
-                <div key={index}>
-                  <strong>{exercise.name}</strong>
-                  <input
-                    type="number"
-                    placeholder="Sets"
-                    value={exercise.setsCompleted}
-                    onChange={(e) => handleInputChange(index, 'setsCompleted', Number(e.target.value))}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Reps"
-                    value={exercise.repsCompleted}
-                    onChange={(e) => handleInputChange(index, 'repsCompleted', Number(e.target.value))}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Duration (seconds)"
-                    value={exercise.duration}
-                    onChange={(e) => handleInputChange(index, 'duration', Number(e.target.value))}
-                  />
-                </div>
-              ))}
-              <button type="submit">Log Workout</button>
-            </form>
-          )}
-        </div>
+                {selectedWorkout && <Button variant="primary" type="submit">Log Workout</Button>}
+              </Form>
+            </Card.Body>
+          </Card>
+        </Container>
       );
 };
 

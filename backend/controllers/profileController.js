@@ -1,7 +1,8 @@
 const Profile = require('../models/Profile');
-const User = require('../models/User');
 
-// Get current user's profile
+// @desc Get current user's profile
+// @route GET /api/profile
+// @access Private
 exports.getProfile = async (req, res) => {
     try {
         const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'email']);
@@ -17,44 +18,35 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-// Create or update profile
-exports.createProfile = async (req, res) => {
+// @desc Create or update user profile
+// @route POST /api/profile
+// @access Private
+exports.createOrUpdateProfile = async (req, res) => {
     try {
-        const {
-            height,
-            weight,
-            fitnessGoal,
-            activityLevel,
-            medicalConditions,
-            preferredWorkoutDays
-        } = req.body;
-
-        // Build profile object
-        const profileFields = {
-            user: req.user.id,
-            height,
-            weight,
-            fitnessGoal,
-            activityLevel,
-            medicalConditions: medicalConditions || [],
-            preferredWorkoutDays: preferredWorkoutDays || []
-        };
+        const { age, weight, height, fitnessGoal, targetAreas } = req.body;
 
         let profile = await Profile.findOne({ user: req.user.id });
 
         if (profile) {
-            // Update
-            profile = await Profile.findOneAndUpdate(
-                { user: req.user.id },
-                { $set: profileFields },
-                { new: true }
-            );
+            // Update existing profile
+            profile.age = age || profile.age;
+            profile.weight = weight || profile.weight;
+            profile.height = height || profile.height;
+            profile.fitnessGoal = fitnessGoal || profile.fitnessGoal;
+            profile.targetAreas = targetAreas || profile.targetAreas;
         } else {
-            // Create
-            profile = new Profile(profileFields);
-            await profile.save();
+            // Create new profile
+            profile = new Profile({
+                user: req.user.id,
+                age,
+                weight,
+                height,
+                fitnessGoal,
+                targetAreas
+            });
         }
 
+        await profile.save();
         res.json(profile);
     } catch (err) {
         console.error(err.message);
@@ -62,7 +54,9 @@ exports.createProfile = async (req, res) => {
     }
 };
 
-// Delete profile
+// @desc Delete user profile
+// @route DELETE /api/profile
+// @access Private
 exports.deleteProfile = async (req, res) => {
     try {
         await Profile.findOneAndRemove({ user: req.user.id });

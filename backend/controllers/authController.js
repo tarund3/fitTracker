@@ -1,44 +1,60 @@
-// controllers/authController.js
+const bcrypt = require('bcryptjs');  // For password hashing
+const jwt = require('jsonwebtoken'); // For token generation
+const User = require('../models/User'); // Import User model
 
-// Import required packages and models
-const bcrypt = require('bcryptjs');         // For password hashing
-const jwt = require('jsonwebtoken');        // For creating tokens
-const User = require('../models/User');     // User model
+// @desc Get current authenticated user
+// @route GET /api/auth/me
+// @access Private
+exports.getAuthUser = async (req, res) => {
+    try {
+        console.log("✅ Authenticated User ID:", req.user ? req.user.id : "No User in req");
 
-// Register Controller
+        if (!req.user) {
+            return res.status(401).json({ msg: 'Token verification failed' });
+        }
+
+        const user = await User.findById(req.user.id).select('-password'); // Exclude password field
+        console.log("🔹 Found user:", user);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        
+        res.json(user);
+    } catch (err) {
+        console.error('❌ Error fetching user:', err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+
+// @desc Register a new user
+// @route POST /api/auth/register
+// @access Public
 exports.register = async (req, res) => {
     try {
-        // 1. Get user input from request body
         const { name, email, password } = req.body;
 
-        // 2. Check if user already exists
+        // Check if the user already exists
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-        // 3. Create new user instance
-        user = new User({
-            name,
-            email,
-            password
-        });
+        // Create new user instance
+        user = new User({ name, email, password });
 
-        // 4. Hash the password
-        const salt = await bcrypt.genSalt(10);           // Generate salt
-        user.password = await bcrypt.hash(password, salt); // Hash password
+        // Hash password before saving
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
 
-        // 5. Save user to database
+        // Save user to DB
         await user.save();
 
-        // 6. Create JWT payload
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
+        // Create JWT payload
+        const payload = { user: { id: user.id } };
 
-        // 7. Sign and send JWT token
+        // Sign and send JWT token
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
@@ -51,48 +67,43 @@ exports.register = async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).send('Server Error');
     }
 };
 
-// Login Controller
+// @desc Authenticate user and get token
+// @route POST /api/auth/login
+// @access Public
 exports.login = async (req, res) => {
     try {
-        // 1. Get user input
         const { email, password } = req.body;
-
-        // 2. Check if user exists
         let user = await User.findOne({ email });
+
         if (!user) {
             return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
-        // 3. Verify password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
-        // 4. Create JWT payload
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
+        const payload = { user: { id: user.id } };
 
-        // 5. Sign and send JWT token
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
             { expiresIn: '24h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token });
+
+                console.log("✅ Generated Token:", token); // Log the token
+                res.json({ token, user }); // Ensure the response includes token
             }
         );
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).send('Server Error');
     }
 };

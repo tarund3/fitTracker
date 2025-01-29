@@ -1,11 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Use createRoot from React 18
+import ReactDOM from 'react-dom/client'; // Import createRoot from react-dom/client
 import App from './App';
 import AuthProvider from './context/AuthContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')); // Use createRoot instead of render
 root.render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>
+  <React.StrictMode>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </React.StrictMode>
 );

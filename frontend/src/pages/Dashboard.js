@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext'; // Import authentication c
 import API from '../api/api'; // Import API helper for making requests
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import LogWorkout from './LogWorkout'; // Import LogWorkout component
+import { Container, Row, Col, Button, Card, Table } from 'react-bootstrap';
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext); // Access user authentication data
@@ -31,37 +32,83 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h2>Welcome, {user?.name}</h2> {/* Display user's name */}
+    <Container className="mt-4">
+      <Row className="mb-3">
+        <Col>
+          <h2 className="text-center">Welcome, {user?.name}</h2>
+        </Col>
+      </Row>
 
-      {/* Logout button */}
-      <button onClick={() => { logout(); navigate('/login'); }}>Logout</button>
+      <Row className="mb-3">
+        <Col className="text-center">
+          <Button variant="danger" onClick={() => { logout(); navigate('/login'); }}>Logout</Button>
+        </Col>
+      </Row>
 
-      {/* Component to log a completed workout */}
-      <LogWorkout onWorkoutLogged={handleWorkoutLogged} />
+      <Row>
+        <Col md={6}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Your Workout Plans</Card.Title>
+              {workouts.length > 0 ? (
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Goal</th>
+                      <th>Exercises</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {workouts.map((workout) => (
+                      <tr key={workout._id}>
+                        <td>{workout.goal}</td>
+                        <td>{workout.exercises.length} exercises</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <p>No workout plans found.</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
 
-      <h3>Your Workout Plans</h3>
-      {workouts.length > 0 ? (
-        <ul>
-          {workouts.map((workout) => (
-            <li key={workout._id}>
-              <strong>{workout.goal}</strong> - {workout.exercises.length} exercises
-            </li>
-          ))}
-        </ul>
-      ) : <p>No workout plans found.</p>}
+        <Col md={6}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Your Progress</Card.Title>
+              {progress.length > 0 ? (
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Exercises Completed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {progress.map((entry) => (
+                      <tr key={entry._id}>
+                        <td>{new Date(entry.date).toLocaleDateString()}</td>
+                        <td>{entry.exercises.length}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <p>No progress logged yet.</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-      <h3>Your Progress</h3>
-      {progress.length > 0 ? (
-        <ul>
-          {progress.map((entry) => (
-            <li key={entry._id}>
-              {new Date(entry.date).toLocaleDateString()} - {entry.exercises.length} exercises completed
-            </li>
-          ))}
-        </ul>
-      ) : <p>No progress logged yet.</p>}
-    </div>
+      <Row>
+        <Col>
+          <LogWorkout onWorkoutLogged={(newLog) => setProgress([...progress, newLog])} />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

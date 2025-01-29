@@ -1,67 +1,16 @@
 const express = require('express');
+const { logProgress, getProgressLogs, deleteProgress } = require('../controllers/progressController'); // Import controllers
 const auth = require('../middleware/auth'); // Protect routes
-const Progress = require('../models/Progress'); // Import Progress model
+
 const router = express.Router();
 
-/**
- * @route   POST /api/progress
- * @desc    Log a completed workout
- * @access  Private
- */
-router.post('/', auth, async (req, res) => {
-  const { workout, exercises } = req.body;
+// POST /api/progress - Log a completed workout
+router.post('/', auth, logProgress);
 
-  try {
-    let progress = new Progress({
-      user: req.user.id, // Get logged-in user
-      workout,
-      exercises
-    });
+// GET /api/progress - Get all progress logs for the logged-in user
+router.get('/', auth, getProgressLogs);
 
-    await progress.save();
-    res.json(progress);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-/**
- * @route   GET /api/progress
- * @desc    Get all progress logs for the logged-in user
- * @access  Private
- */
-router.get('/', auth, async (req, res) => {
-  try {
-    const progressLogs = await Progress.find({ user: req.user.id }).populate('workout', ['goal']);
-    res.json(progressLogs);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-/**
- * @route   DELETE /api/progress/:id
- * @desc    Delete a progress entry
- * @access  Private
- */
-router.delete('/:id', auth, async (req, res) => {
-  try {
-    let progress = await Progress.findById(req.params.id);
-    if (!progress) return res.status(404).json({ msg: 'Progress entry not found' });
-
-    // Ensure the progress entry belongs to the logged-in user
-    if (progress.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'Not authorized' });
-    }
-
-    await Progress.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Progress entry deleted' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+// DELETE /api/progress/:id - Delete a progress entry
+router.delete('/:id', auth, deleteProgress);
 
 module.exports = router;
