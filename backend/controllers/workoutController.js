@@ -59,3 +59,33 @@ exports.deleteWorkout = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+exports.getWorkoutRecommendations = async (req, res) => {
+    try {
+        const { fitnessGoal, experienceLevel, workoutType } = req.query;
+
+        const options = {
+            method: 'GET',
+            url: 'https://exercisedb.p.rapidapi.com/exercises',   
+            headers: {
+                'X-RapidAPIKey': process.env.RAPIDAPI_KEY, // api key stored in env
+                'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
+            }     
+        };
+
+        const response = await axios.request(options);
+        const workouts = response.data;
+
+        // Filter workouts based on user preferences
+        let filteredWorkouts = workouts.filter(workout =>
+            workout.bodyPart.toLowerCase().includes(workoutType.toLowerCase())
+        );
+
+        res.json(filteredWorkouts);
+
+    } catch (error) {
+        console.error('Error fetching workout recommendations:', error.message);
+        res.status(500).json({ msg: 'Failed to fetch workout recommendations' });    
+    
+    }
+};
