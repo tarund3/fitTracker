@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProgressPage from './pages/ProgressPage';
 import LogWorkout from './pages/LogWorkout';
+import NewWorkout from './pages/NewWorkout';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} /> {/* Updated route for the new Dashboard */}
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/log-workout" element={<LogWorkout />} />
+        <Route path="/new-workout" element={<NewWorkout />} />
         <Route path="/" element={<Login />} /> {/* Default route */}
       </Routes>
     </Router>

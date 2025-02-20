@@ -1,4 +1,3 @@
-// UserPage.js
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import API from '../api/api';
@@ -36,7 +35,7 @@ const Dashboard = () => {
       }
     };
     fetchData();
-  }, []); // Ensure useEffect runs when component mounts
+  }, []);
 
   // Handle create workout
   const handleCreateWorkout = async (e) => {
@@ -71,11 +70,6 @@ const Dashboard = () => {
   const handleLogout = () => {
     logout();
     navigate('/login'); // Redirect to login page after logout
-  };
-
-  // Handle navigation to the ProgressPage
-  const navigateToProgressPage = () => {
-    navigate('/progress'); // Navigate to the progress page
   };
 
   return (
@@ -228,10 +222,15 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      <Row>
+
+      {/* Navigation Buttons */}
+      <Row className="mt-3">
         <Col>
-          <Button variant='primary' onClick={navigateToProgressPage}>
+          <Button variant="primary" onClick={() => navigate('/progress')} className="me-2">
             View Progress
+          </Button>
+          <Button variant="success" onClick={() => navigate('/new-workout')}>
+            Create New Workout
           </Button>
         </Col>
       </Row>
