@@ -11,7 +11,7 @@ FitTracker is a full-stack web application that creates personalized workout pla
 <img width="1099" alt="Screen Shot 2025-02-22 at 9 22 38 AM" src="https://github.com/user-attachments/assets/27675da2-42f0-4c31-a3cb-8c13980fd590" />
 
 ### ✅ **User Profiles**
-- Users can **set and update their fitness goals**.
+- Users can **create and update their workouts**.
 - Stores personal details like **age, weight, height**.
 - Users can track **progress over time**.
 <img width="743" alt="Screen Shot 2025-02-22 at 9 22 06 AM" src="https://github.com/user-attachments/assets/092e5b55-80c9-4c96-8c16-add2aca065e1" />
@@ -19,7 +19,6 @@ FitTracker is a full-stack web application that creates personalized workout pla
 ### ✅ **Progress Tracking**
 - Logs **completed workouts**.
 - Displays progress using **charts and analytics**.
-<img width="743" alt="Screen Shot 2025-02-22 at 9 22 06 AM" src="https://github.com/user-attachments/assets/092e5b55-80c9-4c96-8c16-add2aca065e1" />
 <img width="736" alt="Screen Shot 2025-02-22 at 9 24 00 AM" src="https://github.com/user-attachments/assets/53a1b35e-e579-48a6-a19f-15af6cf62d18" />
 
 
