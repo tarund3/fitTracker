@@ -8,7 +8,6 @@ FitTracker is a full-stack web application that creates personalized workout pla
 - Users can **register** and **log in** securely.
 - Uses **JWT authentication** for secure sessions.
 - Passwords are **hashed** before storing in the database.
-<img width="1099" alt="Screen Shot 2025-02-22 at 9 22 38 AM" src="https://github.com/user-attachments/assets/27675da2-42f0-4c31-a3cb-8c13980fd590" />
 
 ### ✅ **User Profiles**
 - Users can **create and update their workouts**.
