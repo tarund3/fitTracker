@@ -8,17 +8,19 @@ FitTracker is a full-stack web application that creates personalized workout pla
 - Users can **register** and **log in** securely.
 - Uses **JWT authentication** for secure sessions.
 - Passwords are **hashed** before storing in the database.
+<img width="1321" alt="Screen Shot 2025-03-09 at 12 08 19 PM" src="https://github.com/user-attachments/assets/a1ca1e24-7677-442b-847e-2e549e6f9bfd" />
 
 ### ✅ **User Profiles**
 - Users can **create and update their workouts**.
 - Stores personal details like **age, weight, height**.
 - Users can track **progress over time**.
-<img width="743" alt="Screen Shot 2025-02-22 at 9 22 06 AM" src="https://github.com/user-attachments/assets/092e5b55-80c9-4c96-8c16-add2aca065e1" />
+<img width="1469" alt="Screen Shot 2025-03-09 at 12 09 13 PM" src="https://github.com/user-attachments/assets/f675dc78-a805-4cbf-a08f-4d072f193614" />
+
 
 ### ✅ **Progress Tracking**
 - Logs **completed workouts**.
 - Displays progress using **charts and analytics**.
-<img width="736" alt="Screen Shot 2025-02-22 at 9 24 00 AM" src="https://github.com/user-attachments/assets/53a1b35e-e579-48a6-a19f-15af6cf62d18" />
+<img width="1470" alt="Screen Shot 2025-03-09 at 12 09 32 PM" src="https://github.com/user-attachments/assets/c1505889-97af-48fd-9d29-4b4fe81d97db" />
 
 
 ## Tech Stack
